@@ -18,8 +18,7 @@ namespace Test
         [Test]
         public void ComparePerformance()
         {
-            var ids = new List<int>();
-            ids.AddRange(Enumerable.Range(1, RunCount));
+            var ids = Enumerable.Range(1, RunCount);
 
             WritePerformanceLog(() => InsertOneByOne(ids), "Insert one by one");
             WritePerformanceLog(() => InsertUsingSqlBatchRunner(ids), "Insert using SQLBatchRunner");
@@ -36,13 +35,13 @@ namespace Test
             Debug.Print("{0}: {1}", title, t.Elapsed);
         }
 
-        private void InsertOneByOne(List<int> ids)
+        private void InsertOneByOne(IEnumerable<int> ids)
         {
             foreach (var id in ids)
                 InsertOneRecord(TestDb.Connection, id);
         }
 
-        private void InsertUsingSqlBatchRunner(List<int> ids)
+        private void InsertUsingSqlBatchRunner(IEnumerable<int> ids)
         {
             var batchRunner = new SqlBatchRunner(TestDb.Connection);
             foreach (var id in ids)
