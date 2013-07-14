@@ -12,7 +12,8 @@ For example,
             conn.Execute("insert into MyTable(id) values(@id)", new { id });
     }
 ```
-can take a lot longer than
+can take a lot longer than the below because the above issues 100 calls to the SQL Server, whereas the below issues only one call.
+
 ```c#
     private void InsertByBatch()
     {
@@ -25,6 +26,7 @@ can take a lot longer than
         ");
     }
 ```
+
 But string concatenation feels just too ugly for your clean code. How can we solve this problem?
 
 SqlBatchRunner comes to rescue. The above statement can be written like this:
