@@ -13,7 +13,7 @@ For example,
             conn.Execute("insert into MyTable(id) values(@id)", new { id });
     }
 ```
-can take longer in actual environment than you tested locally, because these SQL statements are invoked 
+can take longer in actual environment than when you test locally, because these SQL statements are invoked 
 line by line.
 
 ```sql
