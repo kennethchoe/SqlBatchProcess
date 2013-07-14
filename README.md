@@ -25,7 +25,7 @@ can take a lot longer than
         ");
     }
 ```
-But InsertByBatch() looks just too ugly for your clean code. How should we solve this problem?
+But string concatenation feels just too ugly for your clean code. How can we solve this problem?
 
 SqlBatchRunner comes to rescue. The above statement can be written like this:
 ```c#
