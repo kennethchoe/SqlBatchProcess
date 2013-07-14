@@ -27,7 +27,7 @@ line by line.
 How can we change our code to emit SQL code to the SQL server by batch? Do we need to change entire 
 ```InsertRecords()``` to do string concatenation and emit at once? That is likely a lot of work and not so clean code.
 
-SqlBatchRunner comes to rescue. You can change the caller of ```InsertRecords()``` to do this:
+SqlBatchRunner comes to rescue. You can change the caller of ```InsertRecords()``` like this:
 ```c#
     private void CallInsertRecords(IDbConnection conn)
     {
