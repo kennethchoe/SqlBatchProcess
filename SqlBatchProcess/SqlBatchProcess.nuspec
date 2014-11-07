@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Kenneth Choe</authors>
+    <owners>Kenneth Choe</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/kennethchoe/SqlBatchProcess</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Small set of classes that can make your batch SQL insertion or update much faster.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>sql batch dapper</tags>
+  </metadata>
+</package>
