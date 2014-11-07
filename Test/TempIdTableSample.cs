@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Dapper;
 using NUnit.Framework;
+using SqlBatchProcess;
 
 namespace Test
 {

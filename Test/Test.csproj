@@ -63,7 +63,6 @@
     <Compile Include="BitExtensionsBehavior.cs" />
     <Compile Include="SqlBatchRunnerBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TempIdTable.cs" />
     <Compile Include="TempIdTableSample.cs" />
     <Compile Include="TestDb.cs" />
   </ItemGroup>

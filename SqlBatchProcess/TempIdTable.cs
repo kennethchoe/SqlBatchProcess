@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Dapper;
-using SqlBatchProcess;
 
-namespace Test
+namespace SqlBatchProcess
 {
     public class TempIdTable : IDisposable
     {
@@ -16,19 +14,28 @@ namespace Test
             TableName = tableName;
             _conn = conn;
 
-            conn.Execute("create table " + tableName + " (id int not null)");
+            ExecuteNonQuery(conn, "create table " + tableName + " (id int not null)");
 
             var batchRunner = new SqlBatchRunner(conn);
 
             foreach (var id in ids)
-                batchRunner.RecordingConnection.Execute("insert into " + tableName + "(id) values(@id)", new { id });
+            {
+                ExecuteNonQuery(batchRunner.RecordingConnection, "insert into " + tableName + "(id) values(" + id + ")");
+            }
 
             batchRunner.Run();
         }
 
+        private void ExecuteNonQuery(IDbConnection conn, string sql)
+        {
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = sql;
+            cmd.ExecuteNonQuery();
+        }
+
         public void Dispose()
         {
-            _conn.Execute("drop table " + TableName);
+            ExecuteNonQuery(_conn, "drop table " + TableName);
         }
     }
 }
