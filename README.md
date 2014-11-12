@@ -56,9 +56,7 @@ When you write SQL passing array of objects like
 ```where MyColumn in @ids```, each element of ```@ids``` is defined as as a separate SQL parameter. 
 Not only that it will be super slow as it gets bigger, but also SQL will raise an error if it goes over 2,100.
 
-To solve this problem, I implemented ```TempIdTable``` that you can find in Test project.
-
-You use it like this:
+To solve this problem, I implemented ```TempIdTable``` that you can use like this:
 ```c#
     using (new TempIdTable(conn, ids, "#temp_table"))
     {
