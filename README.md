@@ -69,6 +69,6 @@ drop the temp table table when ```using``` ends.
 
 Limitation
 -------------
-SqlBatchProcess library plays well with Dapper like shown on above example code, and in fact it works with any ```IDbConnection```. SqlBatchProcess itself does not depend on Dapper.
+SqlBatchProcess library plays well with Dapper like shown above in the examples, and in fact it works with any ```IDbConnection```. SqlBatchProcess itself does not depend on Dapper.
 
-But, it may not work with some sql codes that uses ```IDbConnection``` only. If your existing code has any C# involvement in between SQL codes, such as getting identity value after insertion and passing it on the next SQL statement, those cannot be batch-executed since C# code is not recorded into RecordingConnection. But most of the time, you should be able to restructure your SQL code so that it does not rely on C# part at all, thus get the benefit of SqlBatchProcess and make it faster.
+But some codes may need restructuring to be able to be "recorded". If your existing code has any C# involvement in between SQL codes, such as getting identity value after insertion and passing it on the next SQL statement, those cannot be batch-executed since C# code is not recorded into RecordingConnection. But most of the time, you should be able to restructure your SQL code so that it does not rely on C# part at all, thus get the benefit of SqlBatchProcess and make it faster.
