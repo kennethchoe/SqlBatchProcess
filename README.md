@@ -66,3 +66,9 @@ To solve this problem, I implemented ```TempIdTable``` that you can use like thi
 ```TempIdTable``` will create the temp table, insert ids into the temp table using SqlBatchRunner, and 
 drop the temp table table when ```using``` ends.
 [1]: https://code.google.com/p/dapper-dot-net/ "Dapper"
+
+Limitation
+-------------
+SqlBatchProcess library plays well with Dapper like shown on above example code, and in fact it works with any ```IDbConnection```. SqlBatchProcess itself does not depend on Dapper.
+
+But, it would not likely work with ANY framework you want, such as entity framework. If your existing code has any C# involvement in between SQL codes, such as getting identity value after insertion and passing it on the next SQL statement, those cannot be batch-executed since C# code is not recorded into RecordingConnection. But many times, you should be able to restructure your SQL code so that it does not rely on C# part at all, thus get the benefit of SqlBatchProcess and make it faster.
