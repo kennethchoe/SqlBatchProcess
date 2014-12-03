@@ -1,6 +1,8 @@
 SqlBatchRunner
 -----------
 
+**The problem occurs only when your sql server is not in the same machine as the sql client. If you have everything (sql server and web server) in one box, this library will not make it faster.**
+
 When you have many insert/update statements to run, it can take longer due to the communication overhead.
 
 For example,
