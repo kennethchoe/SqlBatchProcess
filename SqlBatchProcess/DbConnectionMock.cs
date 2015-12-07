@@ -19,7 +19,7 @@ namespace SqlBatchProcess
 
         public IDbCommand CreateCommand()
         {
-            return new DbCommandMock(_commandRecorder);
+            return new DbCommandMock(_commandRecorder) { Connection = this };
         }
 
         public void Dispose()

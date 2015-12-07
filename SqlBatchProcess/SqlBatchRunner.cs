@@ -22,17 +22,10 @@ namespace SqlBatchProcess
 
         public void Run()
         {
-            IParameterValueConverter converter = new SqlParameterValueConverter();
-
             var sb = new StringBuilder();
             foreach (var recordedCommand in _recordedCommands)
             {
-                var singleSql = recordedCommand.CommandText;
-
-                foreach (IDbDataParameter p in recordedCommand.Parameters)
-                    singleSql = converter.Convert(singleSql, p);
-
-                sb.AppendLine(singleSql);
+                sb.AppendLine(BuildSql(recordedCommand));
 
                 if (sb.Length > BatchExecutionSizeInBytes)
                 {
@@ -42,6 +35,25 @@ namespace SqlBatchProcess
             }
 
             ExecuteCommand(sb);
+        }
+
+        private string BuildSql(RecordedCommand recordedCommand)
+        {
+            IParameterValueConverter converter = new SqlParameterValueConverter();
+            var singleSql = recordedCommand.CommandText;
+
+            foreach (IDbDataParameter p in recordedCommand.Parameters)
+                singleSql = converter.Convert(singleSql, p);
+            return singleSql;
+        }
+
+        public string GetRecordedSql()
+        {
+            var sb = new StringBuilder();
+            foreach (var recordedCommand in _recordedCommands)
+                sb.AppendLine(BuildSql(recordedCommand));
+
+            return sb.ToString();
         }
 
         private void ExecuteCommand(StringBuilder sb)
