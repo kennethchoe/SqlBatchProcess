@@ -8,7 +8,7 @@ namespace SqlBatchProcess
     {
         public bool Contains(string parameterName)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public int IndexOf(string parameterName)
