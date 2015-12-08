@@ -75,6 +75,7 @@ SqlBatchProcess library plays well with Dapper like shown above in the examples,
 
 But some codes may need restructuring to be able to be "recorded". If your existing code has any C# involvement in between SQL codes, such as getting identity value after insertion and passing it on the next SQL statement, those cannot be batch-executed since C# code is not recorded into RecordingConnection. But most of the time, you should be able to restructure your SQL code so that it does not rely on C# part at all, thus get the benefit of SqlBatchProcess and make it faster.
 
-Update on 1.0.1
+Release Notes
 -------------
-batchRunner.GetRecordedSql() returns SQL statement with parameter variables substituted with actual value.
+1.0.1: batchRunner.GetRecordedSql() returns SQL statement with parameter variables substituted with actual value.
+1.0.2: Bugfix - parameter array was not handled properly when the array contained more than 9 elements.

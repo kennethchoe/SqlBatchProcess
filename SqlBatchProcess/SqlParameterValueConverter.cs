@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 
 namespace SqlBatchProcess
 {
     class SqlParameterValueConverter : IParameterValueConverter
     {
-        public string Convert(string sql, IDbDataParameter parameter)
+        private string Convert(string sql, IDbDataParameter parameter)
         {
             String retval;
             var p = (DataParameterMock) parameter;
@@ -45,6 +46,18 @@ namespace SqlBatchProcess
                 }
 
             return sql.Replace("@" + p.ParameterName, retval);
+        }
+
+        public string Convert(string commandText, IDataParameterCollection parameters)
+        {
+            var sqlParams = parameters.Cast<DataParameterMock>()
+                .OrderByDescending(x => x.ParameterName.Length);
+
+            var sql = commandText;
+            foreach (var p in sqlParams)
+                sql = Convert(sql, p);
+
+            return sql;
         }
     }
 }

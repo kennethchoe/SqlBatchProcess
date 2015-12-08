@@ -54,5 +54,17 @@ namespace Test
         {
             conn.Execute("insert into " + TempTable + "(id) values(@id)", new { id });
         }
+
+        [Test]
+        public void GetSqlStatementTest_IEnumerableHandling()
+        {
+            var ids = Enumerable.Range(1, 10);
+
+            var batchRunner = new SqlBatchRunner(TestDb.Connection);
+            batchRunner.RecordingConnection.Execute("select 1 where 1 in (@ids)", new { ids });
+
+            var sql = batchRunner.GetRecordedSql();
+            Assert.That(sql, Is.EqualTo("select 1 where 1 in (('1','2','3','4','5','6','7','8','9','10'))\r\n"));
+        }
     }
 }

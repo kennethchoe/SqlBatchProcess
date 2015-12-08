@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 
 namespace SqlBatchProcess
@@ -40,10 +41,7 @@ namespace SqlBatchProcess
         private string BuildSql(RecordedCommand recordedCommand)
         {
             IParameterValueConverter converter = new SqlParameterValueConverter();
-            var singleSql = recordedCommand.CommandText;
-
-            foreach (IDbDataParameter p in recordedCommand.Parameters)
-                singleSql = converter.Convert(singleSql, p);
+            var singleSql = converter.Convert(recordedCommand.CommandText, recordedCommand.Parameters);
             return singleSql;
         }
 
