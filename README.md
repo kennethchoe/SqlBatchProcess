@@ -80,3 +80,4 @@ Release Notes
 1.0.1: batchRunner.GetRecordedSql() returns SQL statement with parameter variables substituted with actual value.
 1.0.2: Bugfix - parameter array was not handled properly when the array contained more than 9 elements.
 1.0.3: Bugfix - return false for Contains: dapper calls it sometimes (not sure when) and returning false works for now
+1.0.4: Bugfix - object array execution was done using last array object's values

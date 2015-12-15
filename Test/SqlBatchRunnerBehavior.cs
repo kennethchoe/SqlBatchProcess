@@ -66,5 +66,17 @@ namespace Test
             var sql = batchRunner.GetRecordedSql();
             Assert.That(sql, Is.EqualTo("select 1 where 1 in (('1','2','3','4','5','6','7','8','9','10'))\r\n"));
         }
+
+        [Test]
+        public void GetSqlStatementTest_ArrayHandling()
+        {
+            var ids = Enumerable.Range(1, 3).Select(x => new { id = x });
+
+            var batchRunner = new SqlBatchRunner(TestDb.Connection);
+            batchRunner.RecordingConnection.Execute("select @id", ids);
+
+            var sql = batchRunner.GetRecordedSql();
+            Assert.That(sql, Is.EqualTo("select 1\r\nselect 2\r\nselect 3\r\n"));
+        }
     }
 }

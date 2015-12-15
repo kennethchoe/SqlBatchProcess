@@ -47,7 +47,6 @@
     <Compile Include="IParameterValueConverter.cs" />
     <Compile Include="ParameterCollectionMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecordedCommand.cs" />
     <Compile Include="SqlBatchRunner.cs" />
     <Compile Include="SqlParameterValueConverter.cs" />
     <Compile Include="TempIdTable.cs" />

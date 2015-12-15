@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -9,7 +10,7 @@ namespace SqlBatchProcess
     {
         private readonly IDbConnection _conn;
         public IDbConnection RecordingConnection { get; private set; }
-        private readonly List<RecordedCommand> _recordedCommands;
+        private readonly List<string> _recordedCommands;
 
         public int BatchExecutionSizeInBytes { get; set; }
 
@@ -17,7 +18,7 @@ namespace SqlBatchProcess
         {
             _conn = conn;
             RecordingConnection = new DbConnectionMock(this);
-            _recordedCommands = new List<RecordedCommand>();
+            _recordedCommands = new List<string>();
             BatchExecutionSizeInBytes = 100000;
         }
 
@@ -26,7 +27,7 @@ namespace SqlBatchProcess
             var sb = new StringBuilder();
             foreach (var recordedCommand in _recordedCommands)
             {
-                sb.AppendLine(BuildSql(recordedCommand));
+                sb.AppendLine(recordedCommand);
 
                 if (sb.Length > BatchExecutionSizeInBytes)
                 {
@@ -38,10 +39,10 @@ namespace SqlBatchProcess
             ExecuteCommand(sb);
         }
 
-        private string BuildSql(RecordedCommand recordedCommand)
+        private string BuildSql(string commandText, IDataParameterCollection parameters)
         {
             IParameterValueConverter converter = new SqlParameterValueConverter();
-            var singleSql = converter.Convert(recordedCommand.CommandText, recordedCommand.Parameters);
+            var singleSql = converter.Convert(commandText, parameters);
             return singleSql;
         }
 
@@ -49,7 +50,7 @@ namespace SqlBatchProcess
         {
             var sb = new StringBuilder();
             foreach (var recordedCommand in _recordedCommands)
-                sb.AppendLine(BuildSql(recordedCommand));
+                sb.AppendLine(recordedCommand);
 
             return sb.ToString();
         }
@@ -66,7 +67,8 @@ namespace SqlBatchProcess
 
         public void Record(string commandText, IDataParameterCollection parameters)
         {
-            _recordedCommands.Add(new RecordedCommand(commandText, parameters));
+            var sql = BuildSql(commandText, parameters);
+            _recordedCommands.Add(sql);
         }
     }
 }
