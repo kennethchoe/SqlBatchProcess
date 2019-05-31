@@ -26,6 +26,23 @@ namespace SqlBatchProcess
             batchRunner.Run();
         }
 
+        public TempIdTable(IDbConnection conn, IEnumerable<long> ids, string tableName)
+        {
+            TableName = tableName;
+            _conn = conn;
+
+            ExecuteNonQuery(conn, "create table " + tableName + " (id bigint not null)");
+
+            var batchRunner = new SqlBatchRunner(conn);
+
+            foreach (var id in ids)
+            {
+                ExecuteNonQuery(batchRunner.RecordingConnection, "insert into " + tableName + "(id) values(" + id + ")");
+            }
+
+            batchRunner.Run();
+        }
+
         private void ExecuteNonQuery(IDbConnection conn, string sql)
         {
             var cmd = conn.CreateCommand();
