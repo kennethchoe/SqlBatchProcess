@@ -6,38 +6,36 @@ namespace SqlBatchProcess
 {
     public class TempIdTable : IDisposable
     {
-        public readonly string TableName;
-        private readonly IDbConnection _conn;
+        public string TableName;
+        private IDbConnection _conn;
 
         public TempIdTable(IDbConnection conn, IEnumerable<int> ids, string tableName)
         {
-            TableName = tableName;
-            _conn = conn;
-
-            ExecuteNonQuery(conn, "create table " + tableName + " (id int not null)");
-
-            var batchRunner = new SqlBatchRunner(conn);
-
-            foreach (var id in ids)
-            {
-                ExecuteNonQuery(batchRunner.RecordingConnection, "insert into " + tableName + "(id) values(" + id + ")");
-            }
-
-            batchRunner.Run();
+            Construct(conn, ids, tableName, "int");
         }
 
         public TempIdTable(IDbConnection conn, IEnumerable<long> ids, string tableName)
         {
+            Construct(conn, ids, tableName, "bigint");
+        }
+
+        public TempIdTable(IDbConnection conn, IEnumerable<Guid> ids, string tableName)
+        {
+            Construct(conn, ids, tableName, "uniqueidentifier");
+        }
+
+        private void Construct<T>(IDbConnection conn, IEnumerable<T> ids, string tableName, string sqlType)
+        {
             TableName = tableName;
             _conn = conn;
 
-            ExecuteNonQuery(conn, "create table " + tableName + " (id bigint not null)");
+            ExecuteNonQuery(conn, "create table " + tableName + " (id " + sqlType + " not null)");
 
             var batchRunner = new SqlBatchRunner(conn);
 
             foreach (var id in ids)
             {
-                ExecuteNonQuery(batchRunner.RecordingConnection, "insert into " + tableName + "(id) values(" + id + ")");
+                ExecuteNonQuery(batchRunner.RecordingConnection, "insert into " + tableName + "(id) values('" + id + "')");
             }
 
             batchRunner.Run();

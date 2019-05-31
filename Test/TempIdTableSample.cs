@@ -30,5 +30,37 @@ namespace Test
 
             Assert.That(result, Is.EqualTo(RunCount));
         }
+        
+        [Test]
+        public void TempIdTableTestLong()
+        {
+            var ids = new List<long>();
+            ids.AddRange(Enumerable.Range(1, RunCount).Select(x => (long) x));
+
+            int result;
+
+            using (new TempIdTable(TestDb.Connection, ids, TempTable))
+            {
+                result = TestDb.Connection.Query<int>("select count(*) from " + TempTable).First();
+            }
+
+            Assert.That(result, Is.EqualTo(RunCount));
+        }
+
+        [Test]
+        public void TempIdTableTestGuid()
+        {
+            var ids = new List<Guid>();
+            ids.AddRange(Enumerable.Range(1, RunCount).Select(x => new Guid(x, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
+
+            int result;
+
+            using (new TempIdTable(TestDb.Connection, ids, TempTable))
+            {
+                result = TestDb.Connection.Query<int>("select count(*) from " + TempTable).First();
+            }
+
+            Assert.That(result, Is.EqualTo(RunCount));
+        }
     }
 }
